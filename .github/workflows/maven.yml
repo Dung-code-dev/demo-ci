@@ -1,0 +1,27 @@
+name: Java CI with Maven
+
+# Kịch bản này sẽ tự động chạy mỗi khi có ai đó Push code lên nhánh main
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  build:
+    # Yêu cầu GitHub cấp cho một máy ảo chạy hệ điều hành Ubuntu mới nhất
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Tải code từ kho về máy ảo
+      uses: actions/checkout@v3
+
+    - name: Cài đặt môi trường Java 17
+      uses: actions/setup-java@v3
+      with:
+        java-version: '17'
+        distribution: 'temurin'
+        cache: maven # Kỹ thuật Caching giúp build nhanh hơn ở các lần sau
+
+    - name: Chạy tự động Maven Build (Compile + Checkstyle + Test)
+      run: mvn clean install
